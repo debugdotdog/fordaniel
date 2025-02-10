@@ -1,1 +1,382 @@
-<h1>Server Works!</h1>
+<!DOCTYPE html>
+<html lang="en" class="bg-[#030303]">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>debug.dog - Digital Artisan</title>
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,400&display=swap" rel="stylesheet">
+        <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600,900&display=swap" rel="stylesheet">
+        
+        <!-- Alpine, GSAP for animations, and Tailwind -->
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+
+        <!-- Add custom styles -->
+        <style>
+            body {
+                overflow-x: hidden;
+            }
+            .bg-image {
+                background-image: url('/bg.jpg');
+                background-size: cover;
+                background-position: center;
+                opacity: 0.2;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+            }
+            .hover-word {
+                transition: transform 0.1s ease-out;
+                display: inline-block;
+            }
+            .nav-link {
+                position: relative;
+                padding: 2px 0;
+            }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0;
+                height: 1px;
+                background-color: #00DC82;
+                transition: width 0.3s ease;
+            }
+
+            .nav-link:hover::after {
+                width: 100%;
+            }
+
+            .leaf-button {
+                border-top-left-radius: 12px;
+                border-bottom-right-radius: 12px;
+                border-top-right-radius: 0;
+                border-bottom-left-radius: 0;
+                position: relative;
+                overflow: hidden;
+                border-width: 1.5px;
+            }
+
+            .leaf-button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 0;
+                height: 100%;
+                background-color: #00DC82;
+                transition: width 0.3s ease;
+                z-index: -1;
+            }
+
+            .leaf-button:hover::before {
+                width: 100%;
+            }
+
+            .scroll-button {
+                border-top-left-radius: 12px;
+                border-bottom-right-radius: 12px;
+                border-top-right-radius: 0;
+                border-bottom-left-radius: 0;
+                position: relative;
+                overflow: hidden;
+                border-width: 1.5px;
+                width: 48px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .scroll-button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 0;
+                height: 100%;
+                background-color: #00DC82;
+                transition: width 0.3s ease;
+                z-index: -1;
+            }
+
+            .scroll-button:hover::before {
+                width: 100%;
+            }
+
+            .scroll-button svg {
+                width: 20px;
+                height: 20px;
+                transition: transform 0.3s ease;
+            }
+
+            .scroll-button:hover svg {
+                transform: translateY(4px);
+            }
+
+            .scroll-button:hover path {
+                stroke: #000;
+            }
+
+            .decorative-line {
+                height: 1px;
+                background: linear-gradient(90deg, transparent, #00DC82, transparent);
+                opacity: 0.3;
+                width: 100%;
+                margin: 120px 0;
+            }
+
+            .about-title {
+                position: relative;
+                display: inline-block;
+            }
+
+            .about-title::before {
+                content: '';
+                position: absolute;
+                left: -20px;
+                top: 50%;
+                width: 3px;
+                height: 0;
+                background: #00DC82;
+                transition: height 0.4s ease;
+                transform: translateY(-50%);
+            }
+
+            .about-title:hover::before {
+                height: 80%;
+            }
+        </style>
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            'clash': ['"Clash Display"', 'sans-serif'],
+                            'dm-sans': ['"DM Sans"', 'sans-serif'],
+                            'space': ['"Space Mono"', 'monospace'],
+                        },
+                        colors: {
+                            'brand': '#00DC82'  // This is a nice vibrant green, let me know if you want a different shade
+                        }
+                    },
+                },
+            }
+        </script>
+    </head>
+    <body class="text-white">
+        <!-- Add this div right after the body opening tag, before the nav -->
+        <div class="bg-image"></div>
+
+        <!-- Navigation -->
+        <nav class="fixed w-full px-12 py-8 flex justify-between items-center z-50">
+            <div class="text-2xl font-space nav-item">debug.dog</div>
+            <div class="flex items-center gap-12">
+                <div class="flex gap-12 text-sm">
+                    <a href="#" class="nav-link nav-item hover:text-brand transition-colors">SERVICES</a>
+                    <a href="#" class="nav-link nav-item hover:text-brand transition-colors">PROJECTS</a>
+                    <a href="#" class="nav-link nav-item hover:text-brand transition-colors">ABOUT</a>
+                </div>
+                <button class="leaf-button border-brand text-brand px-6 py-2 text-sm hover:text-black transition-all nav-item">
+                    LET'S TALK
+                </button>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <div class="relative h-screen flex flex-col justify-between z-10">
+            <!-- Main Content - Centered -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-12">
+                <!-- Small Artisan Text -->
+                <div class="mb-4 hero-animate">
+                    <span class="text-brand">/</span>
+                    <span class="font-dm-sans text-sm">Artisan</span>
+                    <span class="text-brand">*</span>
+                </div>
+                
+                <!-- Description -->
+                <p class="font-dm-sans text-gray-400 text-sm max-w-[200px] mb-8 hero-animate">
+                    Crafting digital experiences with precision and passion.
+                </p>
+
+                <!-- Main Heading -->
+                <h1 class="font-clash text-[6.5rem] leading-[1.1] tracking-tight hero-animate">
+                    Digital 
+                    <span class="text-brand hover-word">Artisan</span>
+                    <span class="text-brand">*</span><br/>
+                    Crafting Experiences
+                </h1>
+            </div>
+
+            <!-- Bottom Actions - Fixed to bottom -->
+            <div class="absolute bottom-0 left-0 w-full px-12 py-8 flex justify-center items-center opacity-0 bottom-actions">
+                <button class="scroll-button border-brand text-brand hover:text-black transition-colors">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4L12 20M12 20L18 14M12 20L6 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- After the hero section div, add the About Section -->
+        <div class="relative min-h-screen z-10 px-12 pt-64 pb-32">
+            <!-- Section Label -->
+            <div class="mb-32">
+                <span class="text-brand">/</span>
+                <span class="font-dm-sans text-sm">About</span>
+                <span class="text-brand">*</span>
+            </div>
+
+            <!-- Decorative Line -->
+            <div class="decorative-line"></div>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-2 gap-32">
+                <!-- Left Column -->
+                <div class="relative">
+                    <h2 class="about-title font-clash text-[4.5rem] leading-tight mb-12">
+                        Crafting Digital <span class="text-brand">Excellence</span>
+                    </h2>
+                    <p class="font-dm-sans text-gray-400 text-lg leading-relaxed max-w-xl">
+                        As a digital artisan, I blend technical precision with creative innovation. 
+                        Every project is an opportunity to create something extraordinary, 
+                        pushing the boundaries of what's possible in the digital realm.
+                    </p>
+                    <!-- Decorative Number -->
+                    <span class="absolute -left-8 top-0 text-[8rem] font-clash opacity-5">01</span>
+                </div>
+
+                <!-- Right Column -->
+                <div class="relative pt-48">
+                    <h2 class="about-title font-clash text-[4.5rem] leading-tight mb-12">
+                        Beyond the <span class="text-brand">Code</span>
+                    </h2>
+                    <p class="font-dm-sans text-gray-400 text-lg leading-relaxed max-w-xl">
+                        My approach goes beyond mere functionality. It's about crafting 
+                        experiences that resonate, interfaces that delight, and solutions 
+                        that make a lasting impact.
+                    </p>
+                    <!-- Decorative Number -->
+                    <span class="absolute -left-8 top-48 text-[8rem] font-clash opacity-5">02</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add this right before closing </body> tag -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Set initial states
+                gsap.set('.nav-item', { y: -20, opacity: 0 });
+                gsap.set('.hero-animate', { y: 30, opacity: 0 });
+                
+                // Create timeline
+                const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+                
+                tl.to('.nav-item', {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    delay: 0.2
+                })
+                .to('.hero-animate', {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    stagger: 0.1
+                }, '-=0.4')
+                .to('.bottom-actions', {
+                    opacity: 1,
+                    duration: 0.8
+                }, '-=0.4');
+
+                // Mouse hover effect
+                const hoverWord = document.querySelector('.hover-word');
+                const maxMove = 10; // maximum pixels to move
+
+                document.addEventListener('mousemove', (e) => {
+                    if (!hoverWord) return;
+
+                    const rect = hoverWord.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+
+                    // Calculate distance from center of element
+                    const distanceX = (e.clientX - centerX) / window.innerWidth;
+                    const distanceY = (e.clientY - centerY) / window.innerHeight;
+
+                    // Apply movement
+                    gsap.to(hoverWord, {
+                        x: distanceX * maxMove,
+                        y: distanceY * maxMove,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                });
+
+                // Reset position when mouse leaves window
+                document.addEventListener('mouseleave', () => {
+                    if (!hoverWord) return;
+                    
+                    gsap.to(hoverWord, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                });
+
+                // Enhanced scroll trigger animations for about section
+                gsap.from('.decorative-line', {
+                    scaleX: 0,
+                    duration: 1.5,
+                    scrollTrigger: {
+                        trigger: '.decorative-line',
+                        start: 'top 80%',
+                        end: 'top 30%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+
+                gsap.from('.grid > div', {
+                    y: 100,
+                    opacity: 0,
+                    duration: 1.2,
+                    stagger: 0.3,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: '.grid',
+                        start: 'top 80%',
+                        end: 'top 30%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+
+                // Decorative numbers animation
+                gsap.from('.font-clash.opacity-5', {
+                    x: -50,
+                    opacity: 0,
+                    duration: 1,
+                    stagger: 0.2,
+                    scrollTrigger: {
+                        trigger: '.grid',
+                        start: 'top 80%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
